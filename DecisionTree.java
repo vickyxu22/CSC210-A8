@@ -1,12 +1,7 @@
-/**
- * Represents a decision tree, which is a subclass of BinaryTree.
- *
- * @author Nicholas R. Howe
- * @version CSC 212, November 2021
- */
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
+
 public class DecisionTree extends BinaryTree<String> {
 
     // Constructors
@@ -37,6 +32,7 @@ public class DecisionTree extends BinaryTree<String> {
         return currentNode;
     }
 
+    // Write the decision tree to a file
     public static void writeToFile(String filename, DecisionTree root) {
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
             Queue<BinaryTree<String>> nodeQueue = new LinkedList<>();
@@ -63,8 +59,9 @@ public class DecisionTree extends BinaryTree<String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
+    }    
+    
+    // Read the decision tree from a file
     public static DecisionTree readFromFile(String filename) {
         DecisionTree root = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
