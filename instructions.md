@@ -65,7 +65,7 @@ You should also write and test a function called `followPath` that accepts a `St
 
 Before moving on to the next phase, it is a good idea to spend some time becoming accustomed to working with a tree.  Write some test code that builds a sample decision tree with at least six nodes.  (You can use the example below for inspiration.)  Practice accessing the data at individual nodes via the root.  For example, what node is accessed by the expression `tree.getLeft().getRight().getData()`?  Move on to the next phase only when you feel reasonably comfortable with this one.
 
-### Phase 2:  `AnimalGuess`
+### Phase 2:  `AnimalGues
 
 The next step is to write the code that runs the guessing game`AnimalGuess`: 
 - The basic structure in `main` will be a loop, where each time through the loop represents a single guessing round. (Write the code to play just a single round of the game at first.  Later on you can add an outer loop in case the player wants to play again after the first game.)

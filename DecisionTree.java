@@ -7,7 +7,6 @@
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
-
 public class DecisionTree extends BinaryTree<String> {
 
     // Constructors
@@ -38,62 +37,60 @@ public class DecisionTree extends BinaryTree<String> {
         return currentNode;
     }
 
-        // Write the decision tree to a file
-        public static void writeToFile(String filename, DecisionTree root) {
-            try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
-                Queue<BinaryTree<String>> nodeQueue = new LinkedList<>();
-                Queue<String> pathQueue = new LinkedList<>();
-    
-                nodeQueue.add(root);
-                pathQueue.add("");
-    
-                while (!nodeQueue.isEmpty()) {
-                    BinaryTree<String> currentNode = nodeQueue.poll();
-                    String currentPath = pathQueue.poll();
-    
-                    out.println(currentPath + " " + currentNode.getData());
-    
-                    if (currentNode.getLeft() != null) {
-                        nodeQueue.add(currentNode.getLeft());
-                        pathQueue.add(currentPath + "Y");
-                    }
-                    if (currentNode.getRight() != null) {
-                        nodeQueue.add(currentNode.getRight());
-                        pathQueue.add(currentPath + "N");
-                    }
+    public static void writeToFile(String filename, DecisionTree root) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
+            Queue<BinaryTree<String>> nodeQueue = new LinkedList<>();
+            Queue<String> pathQueue = new LinkedList<>();
+
+            nodeQueue.add(root);
+            pathQueue.add("");
+
+            while (!nodeQueue.isEmpty()) {
+                BinaryTree<String> currentNode = nodeQueue.poll();
+                String currentPath = pathQueue.poll();
+
+                out.println(currentPath + " " + currentNode.getData());
+
+                if (currentNode.getLeft() != null) {
+                    nodeQueue.add(currentNode.getLeft());
+                    pathQueue.add(currentPath + "Y");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }    
-    
-        // Read the decision tree from a file
-        public static DecisionTree readFromFile(String filename) {
-            DecisionTree root = null;
-            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(" ", 2);
-                    String path = parts[0];
-                    String data = parts[1];
-    
-                    if (root == null) {
-                        root = new DecisionTree(data);
-                    } else {
-                        DecisionTree parentNode = root.followPath(path.substring(0, path.length() - 1));
-                        DecisionTree newNode = new DecisionTree(data);
-                        if (path.charAt(path.length() - 1) == 'Y') {
-                            parentNode.setLeft(newNode);
-                        } else {
-                            parentNode.setRight(newNode);
-                        }
-                    }
+                if (currentNode.getRight() != null) {
+                    nodeQueue.add(currentNode.getRight());
+                    pathQueue.add(currentPath + "N");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            return root;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static DecisionTree readFromFile(String filename) {
+        DecisionTree root = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ", 2);
+                String path = parts[0];
+                String data = parts[1];
+
+                if (root == null) {
+                    root = new DecisionTree(data);
+                } else {
+                    DecisionTree parentNode = root.followPath(path.substring(0, path.length() - 1));
+                    DecisionTree newNode = new DecisionTree(data);
+                    if (path.charAt(path.length() - 1) == 'Y') {
+                        parentNode.setLeft(newNode);
+                    } else {
+                        parentNode.setRight(newNode);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
+    }
 
     // Sample test code
     public static void main(String[] args) {

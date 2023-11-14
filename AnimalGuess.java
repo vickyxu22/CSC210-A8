@@ -5,34 +5,23 @@ public class AnimalGuess {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Check if a filename is provided as a command line argument
-        if (args.length != 1) {
-            System.out.println("Usage: java AnimalGuess <filename>");
-            System.exit(1);
-        }
-
-        String filename = args[0];
-
-        // Read the decision tree from the file
-        DecisionTree animalGuessTree = DecisionTree.readFromFile(filename);
+        // Build a sample decision tree
+        DecisionTree animalGuessTree = buildSampleTree();
 
         // Main game loop
         do {
             playGame(animalGuessTree, scanner);
         } while (playAgain(scanner));
 
-        // Write the decision tree back to the file
-        DecisionTree.writeToFile(filename, animalGuessTree);
-
         System.out.println("Thanks for playing!");
     }
-    
+
     private static void playGame(DecisionTree currentNode, Scanner scanner) {
         System.out.println("Think of an animal...");
         while (!currentNode.isLeaf()) {
             boolean answer = getUserAnswer(currentNode.getData(), scanner);
             if (answer) {
-                currentNode = (DecisionTree) currentNode.getLeft();
+                currentNode = (DecisionTree)currentNode.getLeft();
             } else {
                 currentNode = (DecisionTree) currentNode.getRight();
             }
@@ -100,14 +89,8 @@ public class AnimalGuess {
                 ),
                 new DecisionTree("Does it swim?",
                         new DecisionTree("Is it a fish?"),
-                        new DecisionTree("Is it a reptile?",
-                                new DecisionTree("Does it have scales?",
-                                        new DecisionTree("Is it a snake?"),
-                                        new DecisionTree("Is it a turtle?")
-                                ),
-                                new DecisionTree("Is it an insect?")
-                        )
+                        new DecisionTree("Is it a reptile?")
                 )
         );
-    }    
+    }
 }
