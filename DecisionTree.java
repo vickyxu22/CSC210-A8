@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.ArrayDeque;
+import java.util.*;
 
 public class DecisionTree extends BinaryTree<String> {
 
@@ -45,40 +43,51 @@ public class DecisionTree extends BinaryTree<String> {
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
             ArrayDeque<DecisionTree> nodeQueue = new ArrayDeque<>();
             ArrayDeque<String> pathQueue = new ArrayDeque<>();
-            ArrayDeque<DecisionTree> newQueue = new ArrayDeque<>();
-    
+            ArrayDeque<String> outputQueue = new ArrayDeque<>();
+
             nodeQueue.add(root);
             pathQueue.add("");
-    
+
             while (!nodeQueue.isEmpty()) {
                 DecisionTree currentNode = nodeQueue.poll();
                 String currentPath = pathQueue.poll();
-    
-                out.println(currentPath + " " + currentNode.getData());
-    
+
+                outputQueue.add(currentPath + " " + currentNode.getData());
+
                 if (currentNode.getLeft() != null) {
                     nodeQueue.add(currentNode.getLeft());
                     pathQueue.add(currentPath + "Y");
-                    newQueue.add(currentNode.getLeft());
                 }
                 if (currentNode.getRight() != null) {
                     nodeQueue.add(currentNode.getRight());
                     pathQueue.add(currentPath + "N");
-                    newQueue.add(currentNode.getRight());
                 }
             }
-            
-            // Write to the file using the existing PrintWriter 'out'
-            while (!newQueue.isEmpty()) {
-                out.write(newQueue.poll() + "\n");
+
+            // Process outputQueue to structure the output before writing to the file
+            while (!outputQueue.isEmpty()) {
+                String line = outputQueue.poll();
+                out.println(line);
             }
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Cannot load file.");
             System.exit(-1);
         }
+
+        // Read and print the file content outside the try-with-resources block
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
+
+    
     
     
     // Read the decision tree from a file
