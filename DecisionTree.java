@@ -1,25 +1,54 @@
 import java.io.*;
 import java.util.*;
-
+/**
+ * Decision tree structure for a guessing game.
+ */
 public class DecisionTree extends BinaryTree<String> {
-
-    // Constructors
+    /**
+     * Constructs a DecisionTree.
+     *
+     * @param data The data for the node.
+     */
     public DecisionTree(String data) {
         super(data);
     }
 
+    /**
+     * Constructs a DecisionTree, left, and right subtrees.
+     *
+     * @param data  The data for the node.
+     * @param left  The left subtree.
+     * @param right The right subtree.
+     */
     public DecisionTree(String data, DecisionTree left, DecisionTree right) {
         super(data, left, right);
     }
     
+    /**
+     * Gets the left subtree as a DecisionTree.
+     *
+     * @return The left subtree as a DecisionTree.
+     */
     public DecisionTree getLeft() {
         return (DecisionTree) super.getLeft();
     }
+
+    /**
+     * Gets the right subtree as a DecisionTree.
+     *
+     * @return The right subtree as a DecisionTree.
+     */
     public DecisionTree getRight() {
         return (DecisionTree) super.getRight();
     }
 
-    // Follow the path based on input string (Y for left, N for right)
+    /**
+     * Follows a given path string (Y for left, N for right) from the current node.
+     *
+     * @param path The path string.
+     * @return The node at the end of the path.
+     * @throws IllegalArgumentException if an invalid path character is encountered.
+     */
     public DecisionTree followPath(String path) {
         DecisionTree currentNode = this;
         for (char direction : path.toCharArray()) {
@@ -38,7 +67,75 @@ public class DecisionTree extends BinaryTree<String> {
         return currentNode;
     }
 
-    // Write the decision tree to a file
+    /**
+     * Finds a node containing specific data starting from the given node.
+     *
+     * @param node       The node to start the search from.
+     * @param searchData The data to search for.
+     * @return The found node containing the searchData, null if not found.
+     */
+    public DecisionTree findNode(DecisionTree node, String searchData) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.getData().equals(searchData)) {
+            return node;
+        }
+
+        DecisionTree leftSearch = findNode(node.getLeft(), searchData);
+        if (leftSearch != null) {
+            return leftSearch;
+        }
+
+        return findNode(node.getRight(), searchData);
+    }
+
+    /**
+     * Adds a new animal and a question to the decision tree.
+     *
+     * @param existingAnimal The existing animal incorrectly guessed.
+     * @param newAnimal      The new animal introduced by the user.
+     * @param question       The question to distinguish between existing and new animals.
+     * @param answer         The user's answer ('yes' or 'no') to the question.
+     * @param root           The root of the decision tree.
+     */
+    public void addNewAnimal(String existingAnimal, String newAnimal, String question, String answer, DecisionTree root) {
+        DecisionTree existingNode = findNode(root, existingAnimal);
+        if (existingNode != null) {
+            DecisionTree newNode = new DecisionTree(newAnimal);
+            DecisionTree originalAnimalNode = new DecisionTree(existingAnimal);
+            DecisionTree newQuestionNode = new DecisionTree(question);
+
+            if ("yes".equalsIgnoreCase(answer)) {
+                existingNode.setLeft(newQuestionNode);
+                newQuestionNode.setLeft(newNode);
+                newQuestionNode.setRight(originalAnimalNode);
+            } else {
+                existingNode.setRight(newQuestionNode);
+                newQuestionNode.setLeft(originalAnimalNode);
+                newQuestionNode.setRight(newNode);
+            }
+
+            writeToFile("AnimalTree.txt", root);
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("AnimalTree.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Writes the decision tree structure to a file.
+     *
+     * @param filename The name of the file.
+     * @param root     The root of the decision tree.
+     */
     public static void writeToFile(String filename, DecisionTree root) {
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
             ArrayDeque<DecisionTree> nodeQueue = new ArrayDeque<>();
@@ -64,7 +161,6 @@ public class DecisionTree extends BinaryTree<String> {
                 }
             }
 
-            // Process outputQueue to structure the output before writing to the file
             while (!outputQueue.isEmpty()) {
                 String line = outputQueue.poll();
                 out.println(line);
@@ -76,7 +172,6 @@ public class DecisionTree extends BinaryTree<String> {
             System.exit(-1);
         }
 
-        // Read and print the file content outside the try-with-resources block
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -87,10 +182,12 @@ public class DecisionTree extends BinaryTree<String> {
         }
     }
 
-    
-    
-    
-    // Read the decision tree from a file
+    /**
+     * Reads the decision tree structure from a file.
+     *
+     * @param filename The name of the file.
+     * @return The root of the decision tree.
+     */
     public static DecisionTree readFromFile(String filename) {
         DecisionTree root = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -118,9 +215,8 @@ public class DecisionTree extends BinaryTree<String> {
         return root;
     }
 
-    // Sample test code
+    // sample test code
     public static void main(String[] args) {
-        // Building a sample decision tree
         DecisionTree tree = new DecisionTree("Is it a mammal?",
                 new DecisionTree("Does it have fur?",
                         new DecisionTree("Is it a cat?"),
@@ -132,10 +228,8 @@ public class DecisionTree extends BinaryTree<String> {
                 )
         );
 
-        // Accessing data at individual nodes
         System.out.println("Data at tree.getLeft().getRight(): " + tree.getLeft().getRight().getData());
 
-        // Testing followPath method
         DecisionTree resultNode = tree.followPath("YN");
         System.out.println("Data at resultNode: " + resultNode.getData());
     }

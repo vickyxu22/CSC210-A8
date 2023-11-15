@@ -11,46 +11,46 @@ your work, please indicate the status of each item
 
 ## Assignment Points:
 
-_____ 1 pt: Class DecisionTree is correctly designed subclass of BinaryTree
+YES 1 pt: Class DecisionTree is correctly designed subclass of BinaryTree
 
-_____ 1 pt: Method followPath correctly returns the indicated node of a decision tree
+YES 1 pt: Method followPath correctly returns the indicated node of a decision tree
 
-_____ 2 pts: Plays a game that moves correctly through the tree to a guess
+YES 2 pts: Plays a game that moves correctly through the tree to a guess
 
-_____ 2 pts: Correctly updates tree when user wins the game
+PART 2 pts: Correctly updates tree when user wins the game
 
-_____ 1 pt: User interaction is clear and easy to navigate
+YES 1 pt: User interaction is clear and easy to navigate
 
-_____ 1 pt: Implemented method to write tree correctly to file in breadth-first order
+PART 1 pt: Implemented method to write tree correctly to file in breadth-first order
 
-_____ 1 pt: Implemented method to read tree correctly from file
+YES 1 pt: Implemented method to read tree correctly from file
 
-_____ 1 pt: Game plays using tree from file and updates it before exiting
+YES 1 pt: Game plays using tree from file and updates it before exiting
 
 
 ## Kudos:
 
-_____ (kudos) Build an extensive tree that can stump the professors by guessing their favorite animals.
+NO (kudos) Build an extensive tree that can stump the professors by guessing their favorite animals.
 
 
 ## General Items:
 
-_____ 4 pts: Program compiles without errors or warnings
+YES 4 pts: Program compiles without errors or warnings
 
-_____ 2 pts: Executes fully & consistently without crashing (exception/freeze)
+YES 2 pts: Executes fully & consistently without crashing (exception/freeze)
 
-_____ 2 pt: Complies with style guidelines (missing items 1 pt each):
+YES 2 pt: Complies with style guidelines (missing items 1 pt each):
 
-      _____ Classes & class members all have Javadoc header comments
+      YES Classes & class members all have Javadoc header comments
 
-      _____ Clear and consistent indentation of bracketed sections
+      YES Clear and consistent indentation of bracketed sections
 
-      _____ Adheres to Java conventions on naming & capitalization
+      YES Adheres to Java conventions on naming & capitalization
 
-      _____ Methods & variables all have clear and accurate names
+      YES Methods & variables all have clear and accurate names
 
-      _____ Methods avoid confusing side effects
+      YES Methods avoid confusing side effects
 
-_____ 1 pt: All required files included with submission (including completed checklist file)
+YES 1 pt: All required files included with submission (including completed checklist file)
 
-_____ 1 pt: readme.md contains reflection on the assignment
+YES 1 pt: readme.md contains reflection on the assignment
