@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.ArrayDeque;
 
 public class DecisionTree extends BinaryTree<String> {
 
@@ -11,6 +12,13 @@ public class DecisionTree extends BinaryTree<String> {
 
     public DecisionTree(String data, DecisionTree left, DecisionTree right) {
         super(data, left, right);
+    }
+    
+    public DecisionTree getLeft() {
+        return (DecisionTree) super.getLeft();
+    }
+    public DecisionTree getRight() {
+        return (DecisionTree) super.getRight();
     }
 
     // Follow the path based on input string (Y for left, N for right)
@@ -35,31 +43,43 @@ public class DecisionTree extends BinaryTree<String> {
     // Write the decision tree to a file
     public static void writeToFile(String filename, DecisionTree root) {
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
-            Queue<BinaryTree<String>> nodeQueue = new LinkedList<>();
-            Queue<String> pathQueue = new LinkedList<>();
-
+            ArrayDeque<DecisionTree> nodeQueue = new ArrayDeque<>();
+            ArrayDeque<String> pathQueue = new ArrayDeque<>();
+            ArrayDeque<DecisionTree> newQueue = new ArrayDeque<>();
+    
             nodeQueue.add(root);
             pathQueue.add("");
-
+    
             while (!nodeQueue.isEmpty()) {
-                BinaryTree<String> currentNode = nodeQueue.poll();
+                DecisionTree currentNode = nodeQueue.poll();
                 String currentPath = pathQueue.poll();
-
+    
                 out.println(currentPath + " " + currentNode.getData());
-
+    
                 if (currentNode.getLeft() != null) {
                     nodeQueue.add(currentNode.getLeft());
                     pathQueue.add(currentPath + "Y");
+                    newQueue.add(currentNode.getLeft());
                 }
                 if (currentNode.getRight() != null) {
                     nodeQueue.add(currentNode.getRight());
                     pathQueue.add(currentPath + "N");
+                    newQueue.add(currentNode.getRight());
                 }
             }
+            
+            // Write to the file using the existing PrintWriter 'out'
+            while (!newQueue.isEmpty()) {
+                out.write(newQueue.poll() + "\n");
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Cannot load file.");
+            System.exit(-1);
         }
-    }    
+    }
+    
     
     // Read the decision tree from a file
     public static DecisionTree readFromFile(String filename) {
